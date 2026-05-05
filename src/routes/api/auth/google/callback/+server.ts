@@ -1,13 +1,14 @@
 import { google } from 'googleapis';
-import { signToken } from '$lib/server/jwt';
-import { getDb } from '$lib/server/db';
-import bcrypt from 'bcrypt';
 import type { RequestHandler } from '@sveltejs/kit';
+import { getUsersCollection } from '$lib/server/db';
+import { signToken } from '$lib/server/jwt';
+import bcrypt from 'bcrypt';
+import { env } from '$env/dynamic/private';
 
 const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_CALLBACK_URL
+  env.GOOGLE_CLIENT_ID,
+  env.GOOGLE_CLIENT_SECRET,
+  env.GOOGLE_CALLBACK_URL
 );
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
