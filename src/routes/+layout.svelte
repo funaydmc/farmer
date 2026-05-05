@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.css';
-  let { children } = $props();
+  let { children, data } = $props();
 
   let sidebarOpen = $state(false);
 
@@ -45,7 +45,13 @@
   <main class="content">
     <header class="desktop-header">
       <div class="page-title">Dashboard</div>
-      <div class="user-profile">User</div>
+      <div class="user-profile">
+        {#if data.user}
+          {data.user.username}
+        {:else}
+          Guest
+        {/if}
+      </div>
     </header>
     <div class="page-container">
       {@render children()}

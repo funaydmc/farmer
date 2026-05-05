@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Font Family */
+  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  --font-family-stack: var(--font-family-primary);
+
+  /* Typography Scale */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  
+  --font-weight-base: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-base: 24px;
+
+  /* Color Palette (Dark Default) */
+  --color-text-primary: #ededed;
+  --color-text-secondary: #9ca3af;
+  --color-text-tertiary: oklch(0.637 0.237 25.331);
+  --color-text-inverse: oklab(0.713655 -0.00286007 -0.0189416 / 0.6);
+  
+  --color-surface-base: #000000;
+  --color-surface-muted: #e56a4a;
+  --color-surface-raised: #1a1a1a;
+  --color-surface-strong: oklab(0.667268 0.130441 0.0935677 / 0.1);
+  
+  --color-border-strong: oklab(0.999994 0.0000455678 0.0000200868 / 0.1);
+
+  /* Spacing Scale */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 32px;
+
+  /* Radius, Shadow, Motion */
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  
+  --motion-duration-instant: 150ms;
+  --motion-duration-fast: 200ms;
+  --motion-duration-normal: 300ms;
+}
+
+/* Global Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-stack);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-base);
+  line-height: var(--line-height-base);
+  background-color: var(--color-surface-base);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--color-surface-muted);
+  outline-offset: 2px;
+}
