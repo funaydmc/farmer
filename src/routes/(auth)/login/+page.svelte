@@ -1,114 +1,244 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import type { ActionData } from './$types';
 
   let { form } = $props();
+  let isLoading = $state(false);
 </script>
 
-<div class="auth-container">
-  <div class="auth-card">
-    <h1>Login</h1>
-    <form method="POST" use:enhance>
-      <div class="field">
-        <label for="username">Username</label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          minlength="3"
-          required
-          autocomplete="username"
-        />
-      </div>
-      <div class="field">
+<div class="login-page">
+  <div class="header">
+    <h2>Welcome back</h2>
+    <p>Sign in to manage your automation profiles.</p>
+  </div>
+
+  {#if form?.error}
+    <div class="error-box" role="alert">
+      {form.error}
+    </div>
+  {/if}
+
+  <form 
+    method="POST" 
+    use:enhance={() => {
+      isLoading = true;
+      return async ({ update }) => {
+        isLoading = false;
+        await update();
+      };
+    }}
+  >
+    <div class="field-group">
+      <label for="username">Username</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        required
+        autocomplete="username"
+        placeholder="Enter your username"
+        disabled={isLoading}
+      />
+    </div>
+
+    <div class="field-group">
+      <div class="label-row">
         <label for="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          minlength="6"
-          required
-          autocomplete="current-password"
-        />
+        <a href="#forgot" class="link-muted">Forgot password?</a>
       </div>
-      {#if form?.error}
-        <p class="error">{form.error}</p>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        required
+        autocomplete="current-password"
+        placeholder="••••••••"
+        disabled={isLoading}
+      />
+    </div>
+
+    <div class="field-row">
+      <label class="checkbox-label">
+        <input type="checkbox" name="remember" />
+        <span>Remember me</span>
+      </label>
+    </div>
+
+    <button type="submit" class="btn-primary" disabled={isLoading}>
+      {#if isLoading}
+        Signing in...
+      {:else}
+        Sign in
       {/if}
-      <button type="submit">Login</button>
-    </form>
-    <p class="switch">
-      Don't have an account? <a href="/register">Register</a>
-    </p>
+    </button>
+  </form>
+
+  <div class="footer">
+    <p>Don't have an account? <a href="/register" class="link-primary">Register here</a></p>
   </div>
 </div>
 
 <style>
-  .auth-container {
+  .login-page {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .header h2 {
+    margin: 0 0 var(--space-2) 0;
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+  }
+
+  .header p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .error-box {
+    background-color: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.4);
+    color: #ef4444;
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
-    background: var(--color-bg, #0f1117);
   }
-  .auth-card {
-    background: var(--color-surface, #1a1d27);
-    padding: 2rem;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
-    color: var(--color-text, #e1e4eb);
-  }
-  h1 {
-    margin: 0 0 1.5rem;
-    font-size: 1.5rem;
-  }
-  .field {
-    margin-bottom: 1rem;
-  }
+
   label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--color-text-secondary, #8b8fa3);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary); /* Brighter for readability */
   }
-  input {
+
+  input[type="text"],
+  input[type="password"] {
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-border, #2a2d3a);
-    border-radius: 4px;
-    background: var(--color-input-bg, #12141c);
-    color: var(--color-text, #e1e4eb);
-    font-size: 0.95rem;
+    padding: var(--space-4);
+    background-color: var(--color-surface-base);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    transition: border-color var(--motion-duration-fast), box-shadow var(--motion-duration-fast);
   }
+
+  input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+  }
+
   input:focus-visible {
-    outline: 2px solid var(--color-primary, #6c63ff);
-    outline-offset: 1px;
+    outline: none;
+    border-color: var(--color-surface-muted);
+    box-shadow: 0 0 0 1px var(--color-surface-muted);
   }
-  button {
-    width: 100%;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 4px;
-    background: var(--color-primary, #6c63ff);
-    color: #fff;
-    font-weight: 600;
+
+  input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .field-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-base);
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-surface-muted);
     cursor: pointer;
   }
-  button:hover {
-    opacity: 0.9;
+
+  .btn-primary {
+    width: 100%;
+    padding: var(--space-4);
+    background-color: var(--color-surface-muted);
+    color: var(--color-text-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color var(--motion-duration-fast), transform var(--motion-duration-fast);
+    margin-top: var(--space-2);
   }
-  .error {
-    color: var(--color-error, #ef4444);
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: #d85c3b; /* Slightly darker shade of muted */
   }
-  .switch {
-    margin-top: 1rem;
-    font-size: 0.875rem;
-    color: var(--color-text-secondary, #8b8fa3);
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(1px);
   }
-  a {
-    color: var(--color-primary, #6c63ff);
+
+  .btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-2);
+  }
+
+  .footer p {
+    margin: 0;
+  }
+
+  .link-primary {
+    color: var(--color-surface-muted);
+    font-weight: var(--font-weight-medium);
     text-decoration: none;
+  }
+
+  .link-primary:hover {
+    text-decoration: underline;
+  }
+
+  .link-muted {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--motion-duration-fast);
+  }
+
+  .link-muted:hover {
+    color: var(--color-text-primary);
   }
 </style>

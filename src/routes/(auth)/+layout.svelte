@@ -4,12 +4,14 @@
 </script>
 
 <div class="auth-layout">
-  <div class="auth-container">
+  <div class="auth-wrapper">
     <div class="brand">
-      <img src="/logo.png" alt="Farmer Logo" width="48" height="48" style="border-radius: 6px;" />
+      <img src="/logo.png" alt="Farmer Logo" width="64" height="64" style="border-radius: var(--radius-sm);" />
       <h1>Farmer Platform</h1>
     </div>
-    {@render children()}
+    <div class="auth-card-wrapper">
+      {@render children()}
+    </div>
   </div>
 </div>
 
@@ -23,14 +25,20 @@
     padding: var(--space-4);
   }
 
-  .auth-container {
+  .auth-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 440px; /* Wider and more comfortable on desktop */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .auth-card-wrapper {
     background-color: var(--color-surface-raised);
     border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-md);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
     padding: var(--space-7);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
   }
 
   .brand {
@@ -38,12 +46,12 @@
     flex-direction: column;
     align-items: center;
     gap: var(--space-4);
-    margin-bottom: var(--space-7);
+    /* Removes the huge gap from previous layout */
   }
 
   .brand h1 {
     margin: 0;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
   }
